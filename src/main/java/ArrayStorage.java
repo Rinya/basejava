@@ -1,15 +1,21 @@
+/**
+ * Array based storage for Resumes
+ */
 class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    private Resume[] storage = new Resume[10000];
+    private int size = 0;
 
     void clear() {
-        int size = size();
         for (int i = 0; i < size; i++) {
             storage[i] = null;
         }
+        System.arraycopy(new Resume[size], 0, storage, 0, size);
+        size = 0;
     }
 
     void save(Resume resume) {
-        storage[size()] = resume;
+        storage[size] = resume;
+        size++;
     }
 
     Resume get(String uuid) {
@@ -26,6 +32,7 @@ class ArrayStorage {
         for (int i = 0; i < size(); i++) {
             if (uuid.equals(storage[i].uuid)) {
                 System.arraycopy(storage, i + 1, storage, i, (storage.length - (i + 1)));
+                size--;
                 break;
             }
         }
@@ -35,7 +42,6 @@ class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        int size = size();
         Resume resumes[] = new Resume[size];
         System.arraycopy(storage, 0, resumes, 0, size);
 
@@ -43,13 +49,6 @@ class ArrayStorage {
     }
 
     int size() {
-        int count = 0;
-        for (Resume resume : storage) {
-            if (resume != null) {
-                count++;
-            }
-        }
-
-        return count;
+        return size;
     }
 }
