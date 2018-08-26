@@ -1,37 +1,39 @@
-import java.util.UUID;
-import java.util.stream.Stream;
-
+/**
+ * Test for your ArrayStorage implementation
+ */
 public class MainTestArrayStorage {
+    static final ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+
     public static void main(String[] args) {
-        ArrayStorage arrayStorage = new ArrayStorage();
-        Resume firstResume = new Resume();
-        firstResume.uuid = UUID.randomUUID();
-        Resume secondResume = new Resume();
-        secondResume.uuid = UUID.randomUUID();
-        Resume thirdResume = new Resume();
-        thirdResume.uuid = UUID.randomUUID();
+        Resume r1 = new Resume();
+        r1.uuid = "uuid1";
+        Resume r2 = new Resume();
+        r2.uuid = "uuid2";
+        Resume r3 = new Resume();
+        r3.uuid = "uuid3";
 
-        arrayStorage.save(firstResume);
-        arrayStorage.save(secondResume);
-        arrayStorage.save(thirdResume);
-        Resume[] resumeList = arrayStorage.getAll();
-        Stream.of(resumeList).forEach(System.out::println);
-        System.out.println("----------------------------");
+        ARRAY_STORAGE.save(r1);
+        ARRAY_STORAGE.save(r2);
+        ARRAY_STORAGE.save(r3);
 
-        Resume resume = arrayStorage.get(thirdResume.uuid);
-        if (resume != null) {
-            Resume fourthResume = new Resume();
-            fourthResume.uuid = UUID.randomUUID();
-            arrayStorage.save(fourthResume);
+        System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.uuid));
+        System.out.println("Size: " + ARRAY_STORAGE.size());
+
+        System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+
+        printAll();
+        ARRAY_STORAGE.delete(r1.uuid);
+        printAll();
+        ARRAY_STORAGE.clear();
+        printAll();
+
+        System.out.println("Size: " + ARRAY_STORAGE.size());
+    }
+
+    static void printAll() {
+        System.out.println("\nGet All");
+        for (Resume r : ARRAY_STORAGE.getAll()) {
+            System.out.println(r);
         }
-
-        if (arrayStorage.size() == 4) {
-            arrayStorage.delete(2);
-        }
-
-        resumeList = arrayStorage.getAll();
-        Stream.of(resumeList).forEach(System.out::println);
-
-        arrayStorage.clear();
     }
 }

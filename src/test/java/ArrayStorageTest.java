@@ -15,11 +15,11 @@ class ArrayStorageTest {
     void setUp() {
         original = new Resume[3];
         original[0] = new Resume();
-        original[0].uuid = UUID.randomUUID();
+        original[0].uuid = UUID.randomUUID().toString();
         original[1] = new Resume();
-        original[1].uuid = UUID.randomUUID();
+        original[1].uuid = UUID.randomUUID().toString();
         original[2] = new Resume();
-        original[2].uuid = UUID.randomUUID();
+        original[2].uuid = UUID.randomUUID().toString();
 
         arrayStorage = new ArrayStorage();
     }
@@ -52,21 +52,6 @@ class ArrayStorageTest {
         arrayStorage.delete(original[1].uuid);
 
         resumes = arrayStorage.getAll();
-
-        assertEquals(2, resumes.length, "В массиве должно быть 2 элемента");
-        assertEquals(original[0].uuid, resumes[0].uuid, "Первые элементы не совпадают");
-        assertEquals(original[2].uuid, resumes[1].uuid, "Вторые элементы не совпадают");
-    }
-
-    @Test
-    void deleteByIndex() {
-        arrayStorage.save(original[0]);
-        arrayStorage.save(original[1]);
-        arrayStorage.save(original[2]);
-
-        arrayStorage.delete(1);
-
-        Resume[] resumes = arrayStorage.getAll();
 
         assertEquals(2, resumes.length, "В массиве должно быть 2 элемента");
         assertEquals(original[0].uuid, resumes[0].uuid, "Первые элементы не совпадают");

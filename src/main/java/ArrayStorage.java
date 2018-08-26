@@ -1,49 +1,50 @@
-import java.util.UUID;
-
 class ArrayStorage {
-    private static final int storageSize = 10000;
-    private Resume[] resumeList = new Resume[storageSize];
-
-    void save(Resume resume) {
-        resumeList[size()] = resume;
-    }
-
-    void delete(UUID uuid) {
-        for (int i = 0; i < size(); i++) {
-            if (uuid.equals(resumeList[i].uuid)) {
-                System.arraycopy(resumeList, i + 1, resumeList, i, (resumeList.length - (i + 1)));
-                break;
-            }
-        }
-    }
-
-    void delete(int index) {
-        if (index > size()) {
-            throw new IllegalArgumentException("Резюме с индексом " + index + " отсутствует в списке.");
-        } else {
-            System.arraycopy(resumeList, index + 1, resumeList, index, (resumeList.length - (index + 1)));
-        }
-    }
+    Resume[] storage = new Resume[10000];
 
     void clear() {
-        for (int i = 0; i < storageSize; i++) {
-            resumeList[i] = null;
+        int size = size();
+        for (int i = 0; i < size; i++) {
+            storage[i] = null;
         }
     }
 
-    Resume get(UUID uuid) {
+    void save(Resume resume) {
+        storage[size()] = resume;
+    }
+
+    Resume get(String uuid) {
         for (int i = 0; i < size(); i++) {
-            if (uuid.equals(resumeList[i].uuid)) {
-                return resumeList[i];
+            if (uuid.equals(storage[i].uuid)) {
+                return storage[i];
             }
         }
 
         return null;
     }
 
+    void delete(String uuid) {
+        for (int i = 0; i < size(); i++) {
+            if (uuid.equals(storage[i].uuid)) {
+                System.arraycopy(storage, i + 1, storage, i, (storage.length - (i + 1)));
+                break;
+            }
+        }
+    }
+
+    /**
+     * @return array, contains only Resumes in storage (without null)
+     */
+    Resume[] getAll() {
+        int size = size();
+        Resume resumes[] = new Resume[size];
+        System.arraycopy(storage, 0, resumes, 0, size);
+
+        return resumes;
+    }
+
     int size() {
         int count = 0;
-        for (Resume resume : resumeList) {
+        for (Resume resume : storage) {
             if (resume != null) {
                 count++;
             }
@@ -51,14 +52,4 @@ class ArrayStorage {
 
         return count;
     }
-
-    Resume[] getAll() {
-        int size = size();
-        Resume resumes[] = new Resume[size];
-        System.arraycopy(resumeList, 0, resumes, 0, size);
-
-        return resumes;
-    }
-
-
 }
