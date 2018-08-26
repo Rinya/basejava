@@ -3,6 +3,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,9 +15,12 @@ class ArrayStorageTest {
     @BeforeEach
     void setUp() {
         original = new Resume[3];
-        original[0] = new Resume("Иванов", "Иван", "Иванович");
-        original[1] = new Resume("Петров", "Петр", "Петрович");
-        original[2] = new Resume("Александоров", "Александр", "Александрович");
+        original[0] = new Resume();
+        original[0].uuid = UUID.randomUUID();
+        original[1] = new Resume();
+        original[1].uuid = UUID.randomUUID();
+        original[2] = new Resume();
+        original[2].uuid = UUID.randomUUID();
 
         arrayStorage = new ArrayStorage();
     }
@@ -32,7 +37,7 @@ class ArrayStorageTest {
         Resume[] resumes = arrayStorage.getAll();
 
         assertEquals(1, arrayStorage.size(), "В массиве должен быть 1 элемент");
-        assertEquals(original[0].getUuid(), resumes[0].getUuid(), "Сохраненный и полученый резюме не совпадают");
+        assertEquals(original[0].uuid, resumes[0].uuid, "Сохраненный и полученый резюме не совпадают");
     }
 
     @Test
@@ -45,13 +50,13 @@ class ArrayStorageTest {
 
         assertEquals(3, resumes.length, "В массиве должно быть 3 элемента");
 
-        arrayStorage.delete(original[1].getUuid());
+        arrayStorage.delete(original[1].uuid);
 
         resumes = arrayStorage.getAll();
 
         assertEquals(2, resumes.length, "В массиве должно быть 2 элемента");
-        assertEquals(original[0].getUuid(), resumes[0].getUuid(), "Первые элементы не совпадают");
-        assertEquals(original[2].getUuid(), resumes[1].getUuid(), "Вторые элементы не совпадают");
+        assertEquals(original[0].uuid, resumes[0].uuid, "Первые элементы не совпадают");
+        assertEquals(original[2].uuid, resumes[1].uuid, "Вторые элементы не совпадают");
     }
 
     @Test
@@ -65,8 +70,8 @@ class ArrayStorageTest {
         Resume[] resumes = arrayStorage.getAll();
 
         assertEquals(2, resumes.length, "В массиве должно быть 2 элемента");
-        assertEquals(original[0].getUuid(), resumes[0].getUuid(), "Первые элементы не совпадают");
-        assertEquals(original[2].getUuid(), resumes[1].getUuid(), "Вторые элементы не совпадают");
+        assertEquals(original[0].uuid, resumes[0].uuid, "Первые элементы не совпадают");
+        assertEquals(original[2].uuid, resumes[1].uuid, "Вторые элементы не совпадают");
     }
 
     @Test
@@ -91,20 +96,9 @@ class ArrayStorageTest {
         arrayStorage.save(original[1]);
         arrayStorage.save(original[2]);
 
-        Resume resume = arrayStorage.get(original[1].getUuid());
+        Resume resume = arrayStorage.get(original[1].uuid);
 
         assertEquals(original[1], resume, "Полученный элемент не соответствует сохраненному");
-    }
-
-    @Test
-    void getByFullname() {
-        arrayStorage.save(original[0]);
-        arrayStorage.save(original[1]);
-        arrayStorage.save(original[2]);
-
-        Resume resume = arrayStorage.get(original[2].getFullName());
-
-        assertEquals(original[2], resume, "Полученный элемент не соответствует сохраненному");
     }
 
     @Test

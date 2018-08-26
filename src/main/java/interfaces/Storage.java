@@ -10,7 +10,7 @@ public interface Storage {
     void delete(int index);
     void clear();
     Resume get(UUID uuid);
-    Resume get(String fullname);
+    /*Resume get(String fullname);*/
     int size();
     Resume[] getAll();
 }

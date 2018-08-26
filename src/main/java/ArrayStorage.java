@@ -1,17 +1,12 @@
 import interfaces.Storage;
 import model.Resume;
-import utils.StringUtils;
 
 import java.util.Objects;
 import java.util.UUID;
 
 public class ArrayStorage implements Storage {
     private static final int storageSize = 10000;
-    private Resume[] resumeList;
-
-    public ArrayStorage() {
-        this.resumeList = new Resume[storageSize];
-    }
+    private Resume[] resumeList = new Resume[storageSize];
 
     @Override
     public void save(Resume resume) {
@@ -21,7 +16,7 @@ public class ArrayStorage implements Storage {
     @Override
     public void delete(UUID uuid) {
         for (int i = 0; i < size(); i++) {
-            if (uuid.equals(resumeList[i].getUuid())) {
+            if (uuid.equals(resumeList[i].uuid)) {
                 System.arraycopy(resumeList, i + 1, resumeList, i, (resumeList.length - (i + 1)));
                 break;
             }
@@ -66,21 +61,8 @@ public class ArrayStorage implements Storage {
     @Override
     public Resume get(UUID uuid) {
         for (int i = 0; i < size(); i++) {
-            if (uuid.equals(resumeList[i].getUuid())) {
+            if (uuid.equals(resumeList[i].uuid)) {
                 return resumeList[i];
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public Resume get(String fullname) {
-        if (StringUtils.isNotEmpty(fullname)) {
-            for (int i = 0; i < size(); i++) {
-                if (fullname.equalsIgnoreCase(resumeList[i].getFullName())) {
-                    return resumeList[i];
-                }
             }
         }
 
