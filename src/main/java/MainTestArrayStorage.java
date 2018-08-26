@@ -1,8 +1,7 @@
 import java.util.UUID;
 import java.util.stream.Stream;
 
-public class MainArray {
-
+public class MainTestArrayStorage {
     public static void main(String[] args) {
         ArrayStorage arrayStorage = new ArrayStorage();
         Resume firstResume = new Resume();
