@@ -105,4 +105,20 @@ class ArrayStorageTest {
         assertEquals(3, resumes.length, "В массиве должно быть 3 элемента");
         assertArrayEquals(original, resumes, "Где-то ошибка, наборы резюме не совпадают");
     }
+
+    @Test
+    void update() {
+        arrayStorage.save(original[0]);
+        arrayStorage.save(original[1]);
+        arrayStorage.save(original[2]);
+
+        assertEquals(3, arrayStorage.size(), "В массиве должно быть 3 элемента");
+
+        Resume resume = new Resume();
+        resume.uuid = original[1].uuid;
+
+        arrayStorage.update(resume);
+
+        assertEquals(resume, arrayStorage.get(resume.uuid), "Обновление не произошло, разные объекты");
+    }
 }
