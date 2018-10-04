@@ -1,9 +1,9 @@
-package storage;
+package ru.javawebinar.basejava.storage;
 
-import model.Resume;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ru.javawebinar.basejava.model.Resume;
 
 import java.util.UUID;
 

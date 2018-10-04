@@ -1,11 +1,11 @@
-package storage;
+package ru.javawebinar.basejava.storage;
 
-import model.Resume;
+import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 
 /**
- * Array based storage for Resumes
+ * Array based ru.javawebinar.basejava.storage for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage {
     @Override
@@ -17,7 +17,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     @Override
     public void save(Resume resume) {
         if (getIndexOf(resume.getUuid()) != -1) {
-            System.out.println("model.Resume " + resume + " already exists in storage");
+            System.out.println("ru.javawebinar.basejava.model.Resume " + resume + " already exists in ru.javawebinar.basejava.storage");
         } else if (STORAGE_SIZE == size) {
             System.out.println("Storage is already full");
         } else {
@@ -31,17 +31,17 @@ public class ArrayStorage extends AbstractArrayStorage {
         int index = getIndexOf(uuid);
         if (index != -1) {
             //Т.к. простой массив, делаем простой заменой элемента
-            //System.arraycopy(storage, index + 1, storage, index, (STORAGE_SIZE - index - 1));
+            //System.arraycopy(ru.javawebinar.basejava.storage, index + 1, ru.javawebinar.basejava.storage, index, (STORAGE_SIZE - index - 1));
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println("model.Resume does not exist in storage");
+            System.out.println("ru.javawebinar.basejava.model.Resume does not exist in ru.javawebinar.basejava.storage");
         }
     }
 
     /**
-     * @return array, contains only Resumes in storage (without null)
+     * @return array, contains only Resumes in ru.javawebinar.basejava.storage (without null)
      */
     @Override
     public Resume[] getAll() {
@@ -54,7 +54,7 @@ public class ArrayStorage extends AbstractArrayStorage {
         if (index != -1) {
             storage[index] = resume;
         } else {
-            System.out.println("model.Resume " + resume + " does not exists in storage");
+            System.out.println("ru.javawebinar.basejava.model.Resume " + resume + " does not exists in ru.javawebinar.basejava.storage");
         }
     }
 

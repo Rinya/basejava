@@ -1,9 +1,9 @@
-package storage;
+package ru.javawebinar.basejava.storage;
 
-import model.Resume;
+import ru.javawebinar.basejava.model.Resume;
 
 /**
- * Array based storage for Resumes
+ * Array based ru.javawebinar.basejava.storage for Resumes
  */
 public abstract class AbstractArrayStorage implements Storage {
     protected static final int STORAGE_SIZE = 10000;
@@ -21,7 +21,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index != -1) {
             return storage[index];
         } else {
-            System.out.println("model.Resume does not exist in storage");
+            System.out.println("ru.javawebinar.basejava.model.Resume does not exist in ru.javawebinar.basejava.storage");
         }
 
         return null;

@@ -1,9 +1,9 @@
-package storage;
+package ru.javawebinar.basejava.storage;
 
-import model.Resume;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ru.javawebinar.basejava.model.Resume;
 
 import java.util.UUID;
 
@@ -37,6 +37,9 @@ public class SortedArrayStorageTest {
 
     @Test
     public void save() {
+        arrayStorage.save(original[0]);
+        arrayStorage.save(original[1]);
+        arrayStorage.save(original[2]);
     }
 
     @Test
@@ -45,6 +48,22 @@ public class SortedArrayStorageTest {
 
     @Test
     public void getAll() {
+        /*Integer[] oldArray = new Integer[] { 1, 5, 2, 50 };
+
+        int index = Arrays.binarySearch(oldArray, 3);
+        System.out.println("index: " + index);
+        if (index < 0) {
+            int insertIndex = -index - 1;
+            System.out.println("insertIndex: " + insertIndex);
+
+            Integer[] newArray = new Integer[oldArray.length + 1];
+            System.arraycopy(oldArray, 0, newArray, 0, insertIndex);
+            System.arraycopy(oldArray, insertIndex, newArray, insertIndex + 1,
+                    oldArray.length - insertIndex);
+            newArray[insertIndex] = 3;
+            oldArray = newArray;
+        }
+        System.out.println(Arrays.toString(oldArray));*/
     }
 
     @Test

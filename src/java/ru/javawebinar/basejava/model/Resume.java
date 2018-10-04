@@ -1,4 +1,4 @@
-package model;
+package ru.javawebinar.basejava.model;
 
 /**
  * Initial resume class
@@ -22,12 +22,13 @@ public class Resume implements Comparable<Resume>{
 
         Resume resume = (Resume) o;
 
-        return getUuid().equals(resume.getUuid());
+        System.out.println("uuid.equals(resume.uuid) : " + uuid.equals(resume.uuid));
+        return uuid.equals(resume.uuid);
     }
 
     @Override
     public int hashCode() {
-        return getUuid().hashCode();
+        return uuid.hashCode();
     }
 
     @Override
@@ -37,6 +38,8 @@ public class Resume implements Comparable<Resume>{
 
     @Override
     public int compareTo(Resume resume) {
+        System.out.println("Enter to compareTo resume: " + resume);
+        System.out.println("result: " + uuid.compareTo(resume.uuid));
         return uuid.compareTo(resume.uuid);
     }
 }
