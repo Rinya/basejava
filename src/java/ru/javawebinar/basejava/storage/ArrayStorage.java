@@ -17,7 +17,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     @Override
     public void save(Resume resume) {
         if (getIndexOf(resume.getUuid()) != -1) {
-            System.out.println("ru.javawebinar.basejava.model.Resume " + resume + " already exists in ru.javawebinar.basejava.storage");
+            System.out.println("Resume " + resume + " already exists in storage");
         } else if (STORAGE_SIZE == size) {
             System.out.println("Storage is already full");
         } else {
@@ -36,7 +36,7 @@ public class ArrayStorage extends AbstractArrayStorage {
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println("ru.javawebinar.basejava.model.Resume does not exist in ru.javawebinar.basejava.storage");
+            System.out.println("Resume does not exist in storage");
         }
     }
 
@@ -54,7 +54,7 @@ public class ArrayStorage extends AbstractArrayStorage {
         if (index != -1) {
             storage[index] = resume;
         } else {
-            System.out.println("ru.javawebinar.basejava.model.Resume " + resume + " does not exists in ru.javawebinar.basejava.storage");
+            System.out.println("Resume " + resume + " does not exists in storage");
         }
     }
 

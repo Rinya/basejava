@@ -7,7 +7,8 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     public void clear() {
-
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
     }
 
     @Override
@@ -17,31 +18,44 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         }
 
         int index = getIndexOf(resume.getUuid());
-        System.out.println("index: " + index);
 
         if (index < 0) {
             index = -index - 1;
-            System.out.println("insertIndex: " + index);
+        } else {
+            throw new IllegalArgumentException("Resume " + resume + " already exists in storage");
         }
 
+        System.arraycopy(storage, index, storage, index + 1,size() - index);
         storage[index] = resume;
-        //System.arraycopy(storage, index, storage, index + 1, size() - index);
-        System.out.println(Arrays.toString(storage));
+        size++;
     }
 
     @Override
     public void delete(String uuid) {
+        int index = getIndexOf(uuid);
+        System.out.println("delete index " + index);
 
+        if (index < 0) {
+            throw new IllegalArgumentException("Resume does not exist in storage");
+        } else {
+            System.arraycopy(storage, index + 1, storage, index, size() - index - 1);
+            storage[--size] = null;
+        }
     }
 
     @Override
     public Resume[] getAll() {
-        return new Resume[0];
+        return Arrays.copyOfRange(storage, 0, size);
     }
 
     @Override
     public void update(Resume resume) {
-
+        int index = getIndexOf(resume.getUuid());
+        if (index >= 0) {
+            storage[index] = resume;
+        } else {
+            System.out.println("Resume " + resume + " does not exists in storage");
+        }
     }
 
     @Override

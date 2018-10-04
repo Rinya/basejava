@@ -21,8 +21,6 @@ public class Resume implements Comparable<Resume>{
         if (!(o instanceof Resume)) return false;
 
         Resume resume = (Resume) o;
-
-        System.out.println("uuid.equals(resume.uuid) : " + uuid.equals(resume.uuid));
         return uuid.equals(resume.uuid);
     }
 
@@ -38,8 +36,6 @@ public class Resume implements Comparable<Resume>{
 
     @Override
     public int compareTo(Resume resume) {
-        System.out.println("Enter to compareTo resume: " + resume);
-        System.out.println("result: " + uuid.compareTo(resume.uuid));
         return uuid.compareTo(resume.uuid);
     }
 }
