@@ -2,21 +2,13 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.Arrays;
-
 /**
  * Array based ru.javawebinar.basejava.storage for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage {
     @Override
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
-    }
-
-    @Override
     public void save(Resume resume) {
-        if (getIndexOf(resume.getUuid()) != -1) {
+        if (getIndexOf(resume.getUuid()) >= 0) {
             System.out.println("Resume " + resume + " already exists in storage");
         } else if (STORAGE_SIZE == size) {
             System.out.println("Storage is already full");
@@ -27,35 +19,9 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    public void delete(String uuid) {
-        int index = getIndexOf(uuid);
-        if (index != -1) {
-            //Т.к. простой массив, делаем простой заменой элемента
-            //System.arraycopy(ru.javawebinar.basejava.storage, index + 1, ru.javawebinar.basejava.storage, index, (STORAGE_SIZE - index - 1));
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
-        } else {
-            System.out.println("Resume does not exist in storage");
-        }
-    }
-
-    /**
-     * @return array, contains only Resumes in ru.javawebinar.basejava.storage (without null)
-     */
-    @Override
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
-    }
-
-    @Override
-    public void update(Resume resume) {
-        int index = getIndexOf(resume.getUuid());
-        if (index != -1) {
-            storage[index] = resume;
-        } else {
-            System.out.println("Resume " + resume + " does not exists in storage");
-        }
+    protected void deleteImp(String uuid, int index) {
+        storage[index] = storage[--size];
+        storage[size] = null;
     }
 
     @Override
