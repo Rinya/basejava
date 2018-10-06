@@ -3,25 +3,17 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.model.Resume;
 
 /**
- * Array based ru.javawebinar.basejava.storage for Resumes
+ * Array based storage for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage {
     @Override
-    public void save(Resume resume) {
-        if (getIndexOf(resume.getUuid()) >= 0) {
-            System.out.println("Resume " + resume + " already exists in storage");
-        } else if (STORAGE_SIZE == size) {
-            System.out.println("Storage is already full");
-        } else {
-            storage[size] = resume;
-            size++;
-        }
+    protected void saveImp(Resume resume, int index) {
+        storage[size] = resume;
     }
 
     @Override
-    protected void deleteImp(String uuid, int index) {
+    protected void deleteImp(int index) {
         storage[index] = storage[--size];
-        storage[size] = null;
     }
 
     @Override
