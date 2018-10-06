@@ -56,6 +56,7 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("Resume does not exist in storage");
         } else {
             deleteImp(index);
+            size--;
             storage[size] = null;
         }
     }
