@@ -1,14 +1,17 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.ExistStorageException;
+import ru.javawebinar.basejava.exception.NotExistStorageException;
+import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 
 /**
- * Array based ru.javawebinar.basejava.storage for Resumes
+ * Array based storage for Resumes
  */
 public abstract class AbstractArrayStorage implements Storage {
-    static final int STORAGE_SIZE = 10000;
+    private static final int STORAGE_SIZE = 10000;
     protected Resume[] storage = new Resume[STORAGE_SIZE];
     protected int size = 0;
 
@@ -21,7 +24,7 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public void save(Resume resume) {
         if (size == STORAGE_SIZE) {
-            System.out.println("Can not add more elements.");
+            throw new StorageException("Can not add more elements.", resume.getUuid());
         }
 
         int index = getIndexOf(resume.getUuid());
@@ -30,11 +33,9 @@ public abstract class AbstractArrayStorage implements Storage {
             saveImp(resume, index);
             size++;
         } else {
-            System.out.println("Resume " + resume + " already exists in storage");
+            throw new ExistStorageException(resume.getUuid());
         }
     }
-
-    protected abstract void saveImp(Resume resume, int index);
 
     @Override
     public Resume get(String uuid) {
@@ -42,10 +43,8 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             return storage[index];
         } else {
-            System.out.println("Resume does not exist in storage");
+            throw new NotExistStorageException(uuid);
         }
-
-        return null;
     }
 
     @Override
@@ -53,14 +52,12 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getIndexOf(uuid);
 
         if (index < 0) {
-            System.out.println("Resume does not exist in storage");
+            throw new NotExistStorageException(uuid);
         } else {
             deleteImp(index);
             storage[--size] = null;
         }
     }
-
-    protected abstract void deleteImp(int index);
 
     /**
      * @return array, contains only Resumes in ru.javawebinar.basejava.storage (without null)
@@ -76,7 +73,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             storage[index] = resume;
         } else {
-            System.out.println("Resume " + resume + " does not exists in storage");
+            throw new NotExistStorageException(resume.getUuid());
         }
     }
 
@@ -84,6 +81,10 @@ public abstract class AbstractArrayStorage implements Storage {
     public int size() {
         return size;
     }
+
+    protected abstract void saveImp(Resume resume, int index);
+
+    protected abstract void deleteImp(int index);
 
     protected abstract int getIndexOf(String uuid);
 }
