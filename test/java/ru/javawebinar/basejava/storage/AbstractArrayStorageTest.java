@@ -7,18 +7,24 @@ import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 public abstract class AbstractArrayStorageTest {
     private static final String DUMMY = "dummy";
     private static final String UUID_1 = "uuid1";
+    public static final Resume RESUME_UUID_1 = new Resume(UUID_1);
     private static final String UUID_2 = "uuid2";
+    public static final Resume RESUME_UUID_2 = new Resume(UUID_2);
     private static final String UUID_3 = "uuid3";
+    public static final Resume RESUME_UUID_3 = new Resume(UUID_3);
     private static final String UUID_4 = "uuid4";
     private static final Resume RESUME_UUID_4 = new Resume(UUID_4);
     private static final String UUID_5 = "uuid5";
+    public static final Resume RESUME_UUID_5 = new Resume(UUID_5);
     private static final String UUID_6 = "uuid6";
-    private static final int HALF_OF_STORAGE = 5000;
+    public static final Resume RESUME_UUID_6 = new Resume(UUID_6);
     private Storage storage;
     private Resume[] resumeArray;
 
@@ -31,20 +37,20 @@ public abstract class AbstractArrayStorageTest {
         storage.clear();
 
         resumeArray = new Resume[] {
-                new Resume(UUID_1),
-                new Resume(UUID_2),
-                new Resume(UUID_3),
+                RESUME_UUID_1,
+                RESUME_UUID_2,
+                RESUME_UUID_3,
                 RESUME_UUID_4,
-                new Resume(UUID_5),
-                new Resume(UUID_6)
+                RESUME_UUID_5,
+                RESUME_UUID_6
         };
 
-        storage.save(resumeArray[0]);
-        storage.save(resumeArray[1]);
-        storage.save(resumeArray[2]);
-        storage.save(resumeArray[3]);
-        storage.save(resumeArray[4]);
-        storage.save(resumeArray[5]);
+        storage.save(RESUME_UUID_1);
+        storage.save(RESUME_UUID_2);
+        storage.save(RESUME_UUID_3);
+        storage.save(RESUME_UUID_4);
+        storage.save(RESUME_UUID_5);
+        storage.save(RESUME_UUID_6);
     }
 
     @After
@@ -80,7 +86,11 @@ public abstract class AbstractArrayStorageTest {
         Resume[] resumes = storage.getAll();
 
         assertEquals("Array should have size 6",6, resumes.length);
-        assertArrayEquals("Где-то ошибка, наборы резюме не совпадают", resumeArray, resumes);
+        for (Resume resume: resumeArray) {
+            assertTrue("UUID " + resume.getUuid() + " doesn't exist in result array",
+                    Arrays.asList(resumes).contains(resume));
+        }
+        /*assertArrayEquals("Где-то ошибка, наборы резюме не совпадают", resumeArray, resumes);*/
     }
 
     @Test
@@ -94,10 +104,8 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = StorageException.class)
     public void fillingStorage() {
-        storage.clear();
         try {
-            for (int i = 0; i < HALF_OF_STORAGE; i++) {
-                storage.save(new Resume());
+            for (int i = 6; i < AbstractArrayStorage.STORAGE_SIZE; i++) {
                 storage.save(new Resume());
             }
         } catch (Exception e) {
@@ -122,7 +130,9 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void get() {
-        assertNotNull("In storage doesn't exist resume with uuid " + UUID_5, storage.get(UUID_5));
+        Resume resume = storage.get(UUID_5);
+        assertNotNull("In storage doesn't exist resume with uuid " + UUID_5, resume);
+        assertEquals("Methd get return wrong resume", UUID_5, resume.getUuid());
     }
 
     @Test(expected = NotExistStorageException.class)
