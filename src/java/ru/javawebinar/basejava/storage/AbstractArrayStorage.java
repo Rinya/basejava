@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -9,7 +8,7 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     static final int STORAGE_SIZE = 10000;
     protected Resume[] storage = new Resume[STORAGE_SIZE];
     protected int size = 0;
@@ -21,28 +20,22 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void save(Resume resume) {
+    protected void saveImpl(Resume resume) {
         if (size == STORAGE_SIZE) {
             throw new StorageException("Can not add more elements.", resume.getUuid());
         }
 
-        int index = getIndexOf(resume.getUuid());
-
-        if (index < 0) {
-            saveImp(resume, index);
-            size++;
-        } else {
-            throw new ExistStorageException(resume.getUuid());
-        }
+        saveArrayImp(resume, getIndexOf(resume.getUuid()));
+        size++;
     }
 
     @Override
-    protected Resume getImpl(int index) {
+    protected Resume getImpl(Integer index) {
         return storage[index];
     }
 
     @Override
-    protected void deleteImp(int index) {
+    protected void deleteImp(Integer index) {
         deleteArrayImp(index);
         storage[--size] = null;
     }
@@ -55,7 +48,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateImpl(int index, Resume resume) {
+    protected void updateImpl(Integer index, Resume resume) {
         storage[index] = resume;
     }
 
@@ -64,6 +57,16 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
+    @Override
+    protected boolean existInStorage(Resume resume) {
+        return getIndexOf(resume.getUuid()) >= 0;
+    }
+
+    @Override
+    protected boolean notExistInStorage(String uuid) {
+        return getIndexOf(uuid) < 0;
+    }
+
     protected abstract void deleteArrayImp(int index);
-    protected abstract void saveImp(Resume resume, int index);
+    protected abstract void saveArrayImp(Resume resume, int index);
 }

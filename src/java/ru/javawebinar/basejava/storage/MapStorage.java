@@ -1,12 +1,11 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapStorage extends AbstractStorage {
+public class MapStorage extends AbstractStorage<String> {
     private Map<String, Resume> storage;
 
     public MapStorage() {
@@ -14,51 +13,43 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public void delete(String uuid) {
-        checkExistUUIDInStorage(uuid);
-        storage.remove(uuid);
+    protected boolean existInStorage(Resume resume) {
+        return !notExistInStorage(resume.getUuid());
     }
 
     @Override
-    protected void deleteImp(int index) {
-        throw new UnsupportedOperationException();
+    protected boolean notExistInStorage(String uuid) {
+        return getIndexOf(uuid) == null;
     }
 
     @Override
-    public void update(Resume resume) {
-        checkExistUUIDInStorage(resume.getUuid());
-        storage.replace(resume.getUuid(), resume);
+    protected void saveImpl(Resume resume) {
+        storage.put(resume.getUuid(), resume);
     }
 
     @Override
-    protected void updateImpl(int index, Resume resume) {
-        throw new UnsupportedOperationException();
+    protected void deleteImp(String index) {
+        storage.remove(index);
     }
 
     @Override
-    public Resume get(String uuid) {
-        checkExistUUIDInStorage(uuid);
-        return storage.get(uuid);
+    protected void updateImpl(String index, Resume resume) {
+        storage.replace(index, resume);
     }
 
     @Override
-    protected Resume getImpl(int index) {
-        throw new UnsupportedOperationException();
+    protected Resume getImpl(String index) {
+        return storage.get(index);
     }
 
     @Override
-    protected int getIndexOf(String uuid) {
-        throw new UnsupportedOperationException();
+    protected String getIndexOf(String uuid) {
+        return storage.containsKey(uuid)? uuid : null;
     }
 
     @Override
     public void clear() {
         storage.clear();
-    }
-
-    @Override
-    public void save(Resume resume) {
-        storage.put(resume.getUuid(), resume);
     }
 
     @Override
@@ -69,13 +60,5 @@ public class MapStorage extends AbstractStorage {
     @Override
     public int size() {
         return storage.size();
-    }
-
-    @Override
-    protected int checkExistUUIDInStorage(String uuid) {
-        if (!storage.containsKey(uuid))
-            throw new NotExistStorageException(uuid);
-
-        return 0;
     }
 }

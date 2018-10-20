@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.storage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
@@ -14,17 +15,17 @@ import static org.junit.Assert.*;
 public abstract class AbstractArrayStorageTest {
     private static final String DUMMY = "dummy";
     private static final String UUID_1 = "uuid1";
-    public static final Resume RESUME_UUID_1 = new Resume(UUID_1);
+    private static final Resume RESUME_UUID_1 = new Resume(UUID_1);
     private static final String UUID_2 = "uuid2";
-    public static final Resume RESUME_UUID_2 = new Resume(UUID_2);
+    private static final Resume RESUME_UUID_2 = new Resume(UUID_2);
     private static final String UUID_3 = "uuid3";
-    public static final Resume RESUME_UUID_3 = new Resume(UUID_3);
+    private static final Resume RESUME_UUID_3 = new Resume(UUID_3);
     private static final String UUID_4 = "uuid4";
     private static final Resume RESUME_UUID_4 = new Resume(UUID_4);
     private static final String UUID_5 = "uuid5";
-    public static final Resume RESUME_UUID_5 = new Resume(UUID_5);
+    private static final Resume RESUME_UUID_5 = new Resume(UUID_5);
     private static final String UUID_6 = "uuid6";
-    public static final Resume RESUME_UUID_6 = new Resume(UUID_6);
+    private static final Resume RESUME_UUID_6 = new Resume(UUID_6);
     private Storage storage;
     private Resume[] resumeArray;
 
@@ -90,7 +91,6 @@ public abstract class AbstractArrayStorageTest {
             assertTrue("UUID " + resume.getUuid() + " doesn't exist in result array",
                     Arrays.asList(resumes).contains(resume));
         }
-        /*assertArrayEquals("Где-то ошибка, наборы резюме не совпадают", resumeArray, resumes);*/
     }
 
     @Test
@@ -100,6 +100,11 @@ public abstract class AbstractArrayStorageTest {
 
         assertEquals("The storage should have size 7", 7, storage.size());
         assertNotNull("In storage doesn't exist resume with uuid " + resume.getUuid(), storage.get(resume.getUuid()));
+    }
+
+    @Test(expected = ExistStorageException.class)
+    public void saveExistingResume() {
+        storage.save(RESUME_UUID_2);
     }
 
     @Test(expected = StorageException.class)
