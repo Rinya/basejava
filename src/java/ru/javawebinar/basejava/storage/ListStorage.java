@@ -4,7 +4,6 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ListStorage extends AbstractStorage<Integer> {
     private List<Resume> storage;
@@ -14,30 +13,19 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected boolean existInStorage(Resume resume) {
-        return !notExistInStorage(resume.getUuid());
-    }
-
-    @Override
-    protected boolean notExistInStorage(String uuid) {
-        return getIndexOf(uuid) == -1;
+    protected boolean existInStorage(Integer index) {
+        return !(index == -1);
     }
 
     @Override
     protected Integer getIndexOf(String uuid) {
-        Optional<Resume> optionalResume = storage
-                .stream()
-                .filter(item -> uuid.equals(item.getUuid())).findFirst();
-
-        return storage.indexOf(optionalResume.orElse(null));
-
-        /*for (Resume resume: storage) {
-          if (uuid.equals(resume.getUuid())) {
-              return storage.indexOf(resume);
-          }
+        for (int i = 0; i < storage.size(); i++) {
+            if (uuid.equals(storage.get(i).getUuid())) {
+                return i;
+            }
         }
 
-        return null;*/
+        return -1;
     }
 
     @Override

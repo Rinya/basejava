@@ -58,13 +58,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected boolean existInStorage(Resume resume) {
-        return getIndexOf(resume.getUuid()) >= 0;
-    }
-
-    @Override
-    protected boolean notExistInStorage(String uuid) {
-        return getIndexOf(uuid) < 0;
+    protected boolean existInStorage(Integer index) {
+        return index >= 0;
     }
 
     protected abstract void deleteArrayImp(int index);

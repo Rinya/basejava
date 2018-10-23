@@ -22,7 +22,8 @@ public abstract class AbstractStorage<T> implements Storage {
 
     @Override
     public void save(Resume resume) {
-        if (existInStorage(resume)) {
+        T index = getIndexOf(resume.getUuid());
+        if (existInStorage(index)) {
             throw new ExistStorageException(resume.getUuid());
         }
 
@@ -30,15 +31,15 @@ public abstract class AbstractStorage<T> implements Storage {
     }
 
     private T checkExistUUIDInStorage(String uuid) {
-        if (notExistInStorage(uuid)) {
+        T index = getIndexOf(uuid);
+        if (!existInStorage(index)) {
             throw new NotExistStorageException(uuid);
         }
 
-        return getIndexOf(uuid);
+        return index;
     }
 
-    protected abstract boolean existInStorage(Resume resume);
-    protected abstract boolean notExistInStorage(String uuid);
+    protected abstract boolean existInStorage(T resume);
 
     protected abstract void saveImpl(Resume resume);
     protected abstract void deleteImp(T index);

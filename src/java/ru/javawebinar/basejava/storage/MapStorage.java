@@ -13,13 +13,8 @@ public class MapStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected boolean existInStorage(Resume resume) {
-        return !notExistInStorage(resume.getUuid());
-    }
-
-    @Override
-    protected boolean notExistInStorage(String uuid) {
-        return getIndexOf(uuid) == null;
+    protected boolean existInStorage(String index) {
+        return index != null;
     }
 
     @Override
