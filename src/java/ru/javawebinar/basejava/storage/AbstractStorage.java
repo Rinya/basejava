@@ -27,7 +27,7 @@ public abstract class AbstractStorage<T> implements Storage {
             throw new ExistStorageException(resume.getUuid());
         }
 
-        saveImpl(resume);
+        saveImpl(resume, index);
     }
 
     private T checkExistUUIDInStorage(String uuid) {
@@ -41,7 +41,7 @@ public abstract class AbstractStorage<T> implements Storage {
 
     protected abstract boolean existInStorage(T resume);
 
-    protected abstract void saveImpl(Resume resume);
+    protected abstract void saveImpl(Resume resume, T index);
     protected abstract void deleteImp(T index);
     protected abstract void updateImpl(T index, Resume resume);
     protected abstract Resume getImpl(T index);

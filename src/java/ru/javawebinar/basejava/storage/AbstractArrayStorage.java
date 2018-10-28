@@ -20,12 +20,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void saveImpl(Resume resume) {
+    protected void saveImpl(Resume resume, Integer index) {
         if (size == STORAGE_SIZE) {
             throw new StorageException("Can not add more elements.", resume.getUuid());
         }
 
-        saveArrayImp(resume, getIndexOf(resume.getUuid()));
+        saveArrayImp(resume, index);
         size++;
     }
 
