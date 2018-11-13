@@ -3,29 +3,14 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage<Integer> {
+public class ListStorage extends AbstractStorage {
     private List<Resume> storage;
 
     public ListStorage() {
         this.storage = new ArrayList<>();
-    }
-
-    @Override
-    protected boolean existInStorage(Integer index) {
-        return !(index == -1);
-    }
-
-    @Override
-    protected Integer getIndexOf(String uuid) {
-        for (int i = 0; i < storage.size(); i++) {
-            if (uuid.equals(storage.get(i).getUuid())) {
-                return i;
-            }
-        }
-
-        return -1;
     }
 
     @Override
@@ -34,28 +19,45 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void saveImpl(Resume resume) {
+    public List<Resume> getAllSorted() {
+        Collections.sort(storage);
+        return storage;
+    }
+
+    @Override
+    protected Object getSearchKey(String condition) {
+        for (int i = 0; i < storage.size(); i++) {
+            if (condition.equals(storage.get(i).getUuid())) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (int)searchKey != -1;
+    }
+
+    @Override
+    protected void doUpdate(Resume resume, Object searchKey) {
+        storage.set((Integer) searchKey, resume);
+    }
+
+    @Override
+    protected void doSave(Resume resume, Object searchKey) {
         storage.add(resume);
     }
 
     @Override
-    protected Resume getImpl(Integer index) {
-        return storage.get(index);
+    protected void doDelete(Object index) {
+        storage.remove((int)index);
     }
 
     @Override
-    protected void deleteImp(Integer index) {
-        storage.remove(index.intValue());
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return storage.toArray(new Resume[0]);
-    }
-
-    @Override
-    protected void updateImpl(Integer index, Resume resume) {
-        storage.set(index, resume);
+    protected Resume doGet(Object index) {
+        return storage.get((Integer) index);
     }
 
     @Override

@@ -4,46 +4,48 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-public abstract class AbstractStorage<T> implements Storage {
+public abstract class AbstractStorage implements Storage {
     @Override
     public Resume get(String uuid) {
-        return getImpl(checkExistUUIDInStorage(uuid));
+        return doGet(getExistedSearchKey(uuid));
     }
 
     @Override
     public void update(Resume resume) {
-        updateImpl(checkExistUUIDInStorage(resume.getUuid()), resume);
+        doUpdate(resume, getExistedSearchKey(resume.getUuid()));
     }
 
     @Override
     public void delete(String uuid) {
-        deleteImp(checkExistUUIDInStorage(uuid));
+        doDelete(getExistedSearchKey(uuid));
     }
 
     @Override
     public void save(Resume resume) {
-        T index = getIndexOf(resume.getUuid());
-        if (existInStorage(index)) {
-            throw new ExistStorageException(resume.getUuid());
-        }
-
-        saveImpl(resume, index);
+        doSave(resume, getNotExistedSearchKey(resume.getUuid()));
     }
 
-    private T checkExistUUIDInStorage(String uuid) {
-        T index = getIndexOf(uuid);
-        if (!existInStorage(index)) {
+    protected abstract Object getSearchKey(String condition);
+    protected abstract boolean isExist(Object searchKey);
+    protected abstract void doUpdate(Resume resume, Object searchKey);
+    protected abstract void doSave(Resume resume, Object searchKey);
+    protected abstract void doDelete(Object searchKey);
+    protected abstract Resume doGet(Object searchKey);
+
+    private Object getExistedSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
-
-        return index;
+        return searchKey;
     }
 
-    protected abstract boolean existInStorage(T resume);
+    private Object getNotExistedSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
+        if (isExist(searchKey)) {
+            throw new ExistStorageException(uuid);
+        }
 
-    protected abstract void saveImpl(Resume resume, T index);
-    protected abstract void deleteImp(T index);
-    protected abstract void updateImpl(T index, Resume resume);
-    protected abstract Resume getImpl(T index);
-    protected abstract T getIndexOf(String uuid);
+        return searchKey;
+    }
 }

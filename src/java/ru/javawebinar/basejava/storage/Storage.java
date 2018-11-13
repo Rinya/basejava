@@ -2,6 +2,8 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.List;
+
 /**
  * Array based ru.javawebinar.basejava.storage for Resumes
  */
@@ -14,10 +16,7 @@ public interface Storage {
 
     void delete(String uuid);
 
-    /**
-     * @return array, contains only Resumes in ru.javawebinar.basejava.storage (without null)
-     */
-    Resume[] getAll();
+    List<Resume> getAllSorted();
 
     void update(Resume resume);
 
