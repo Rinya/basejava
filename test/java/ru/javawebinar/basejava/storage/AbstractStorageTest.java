@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 public abstract class AbstractStorageTest {
+    public static final String III = "Ivanov Ivan Ivanovich";
     Storage storage;
 
     private static final String UUID_1 = "uuid1";
@@ -24,11 +25,17 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_3;
     private static final Resume RESUME_4;
 
+    public static final String PPP = "Petrov Petr Petrovich";
+
+    public static final String KKK = "Konstantinov Konstantin Konstantinovich";
+
+    public static final String RRR = "Romanov Roman Romanovich";
+
     static {
-        RESUME_1 = new Resume(UUID_1);
-        RESUME_2 = new Resume(UUID_2);
-        RESUME_3 = new Resume(UUID_3);
-        RESUME_4 = new Resume(UUID_4);
+        RESUME_1 = new Resume(UUID_1, III);
+        RESUME_2 = new Resume(UUID_2, PPP);
+        RESUME_3 = new Resume(UUID_3, KKK);
+        RESUME_4 = new Resume(UUID_4, RRR);
     }
 
     AbstractStorageTest(Storage storage) {
@@ -56,7 +63,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume newResume = new Resume(UUID_1);
+        Resume newResume = new Resume(UUID_1, III);
         storage.update(newResume);
         assertSame(newResume, storage.get(UUID_1));
     }

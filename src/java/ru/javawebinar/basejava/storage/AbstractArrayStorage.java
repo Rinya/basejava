@@ -5,8 +5,6 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Array based storage for Resumes
@@ -22,9 +20,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    public List<Resume> getAllSorted() {
-        return Stream.of(Arrays.copyOfRange(storage, 0, size))
-                .collect(Collectors.toList());
+    @Override
+    protected List<Resume> getAllFromStorage() {
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 
     @Override

@@ -1,6 +1,6 @@
 package ru.javawebinar.basejava.model;
 
-import org.apache.commons.lang3.StringUtils;
+import ru.javawebinar.basejava.exception.EmptyFullnameException;
 
 import java.util.UUID;
 
@@ -12,16 +12,14 @@ public class Resume implements Comparable<Resume>{
     private final String uuid;
     private final String fullname;
 
-    public Resume() {
-        this(UUID.randomUUID().toString(), null);
-    }
-
-    public Resume(String uuid) {
-        this.uuid = uuid;
-        this.fullname = null;
+    public Resume(String fullname) {
+        this(UUID.randomUUID().toString(), fullname);
     }
 
     public Resume(String uuid, String fullName) {
+        if (fullName == null || fullName.length() == 0) {
+            throw new EmptyFullnameException(uuid);
+        }
         this.uuid = uuid;
         this.fullname = fullName;
     }
@@ -55,7 +53,7 @@ public class Resume implements Comparable<Resume>{
 
     @Override
     public int compareTo(Resume resume) {
-        int fullnameCompare = StringUtils.compare(fullname, resume.getFullname());
+        int fullnameCompare = fullname != null? fullname.compareTo(resume.getFullname()) : -1;
         int uuidCompare = uuid.compareTo(resume.uuid);
         return uuidCompare < fullnameCompare? uuidCompare : fullnameCompare;
     }

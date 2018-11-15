@@ -6,7 +6,9 @@ import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
-    protected AbstractArrayStorageTest(Storage storage) {
+    private static final String VASYA = "vasya";
+
+    AbstractArrayStorageTest(Storage storage) {
         super(storage);
     }
 
@@ -14,11 +16,11 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
     public void saveOverflow() {
         try {
             for (int i = 4; i <= AbstractArrayStorage.STORAGE_SIZE; i++) {
-                storage.save(new Resume());
+                storage.save(new Resume(VASYA));
             }
         } catch (StorageException e) {
             Assert.fail();
         }
-        storage.save(new Resume());
+        storage.save(new Resume(VASYA));
     }
 }
