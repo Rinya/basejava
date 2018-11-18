@@ -1,7 +1,5 @@
 package ru.javawebinar.basejava.model;
 
-import ru.javawebinar.basejava.exception.EmptyFullnameException;
-
 import java.util.UUID;
 
 /**
@@ -18,7 +16,7 @@ public class Resume implements Comparable<Resume>{
 
     public Resume(String uuid, String fullName) {
         if (fullName == null || fullName.length() == 0) {
-            throw new EmptyFullnameException(uuid);
+            throw new IllegalArgumentException("fullName is empty, for uuid " + uuid);
         }
         this.uuid = uuid;
         this.fullname = fullName;
@@ -54,7 +52,6 @@ public class Resume implements Comparable<Resume>{
     @Override
     public int compareTo(Resume resume) {
         int fullnameCompare = fullname != null? fullname.compareTo(resume.getFullname()) : -1;
-        int uuidCompare = uuid.compareTo(resume.uuid);
-        return uuidCompare < fullnameCompare? uuidCompare : fullnameCompare;
+        return fullnameCompare != 0? fullnameCompare : uuid.compareTo(resume.uuid);
     }
 }

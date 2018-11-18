@@ -19,16 +19,6 @@ public abstract class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchKey(String condition) {
-        return storage.get(condition);
-    }
-
-    @Override
-    protected boolean isExist(Object searchKey) {
-        return searchKey != null;
-    }
-
-    @Override
     protected void doSave(Resume resume, Object searchKey) {
         storage.put(resume.getUuid(), resume);
     }

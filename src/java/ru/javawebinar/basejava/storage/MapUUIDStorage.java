@@ -10,8 +10,18 @@ public class MapUUIDStorage extends MapStorage {
     }
 
     @Override
+    protected Object getSearchKey(String uuid) {
+        return uuid;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return storage.containsKey(String.valueOf(searchKey));
+    }
+
+    @Override
     protected void doUpdate(Resume resume, Object searchKey) {
-        storage.replace(((Resume)searchKey).getUuid(), resume);
+        storage.replace(String.valueOf(searchKey), resume);
     }
 
     @Override

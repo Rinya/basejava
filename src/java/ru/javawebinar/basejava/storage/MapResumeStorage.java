@@ -10,6 +10,16 @@ public class MapResumeStorage extends MapStorage {
     }
 
     @Override
+    protected Object getSearchKey(String uuid) {
+        return storage.get(uuid);
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return searchKey != null;
+    }
+
+    @Override
     protected void doUpdate(Resume resume, Object searchKey) {
         storage.replace(resume.getUuid(), resume);
     }
