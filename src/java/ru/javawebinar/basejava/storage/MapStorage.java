@@ -9,7 +9,7 @@ import java.util.Map;
 public abstract class MapStorage extends AbstractStorage {
     protected Map<String, Resume> storage;
 
-    public MapStorage(Map<String, Resume> storage) {
+    protected MapStorage(Map<String, Resume> storage) {
         this.storage = storage;
     }
 
