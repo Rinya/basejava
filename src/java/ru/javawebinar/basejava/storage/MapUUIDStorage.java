@@ -2,35 +2,60 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class MapUUIDStorage extends MapStorage {
+public class MapUUIDStorage extends AbstractStorage<String> {
+    private Map<String, Resume> storage;
+
     MapUUIDStorage() {
-        super(new HashMap<>());
+        this.storage = new HashMap<>();
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected String getSearchKey(String uuid) {
         return uuid;
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return storage.containsKey(String.valueOf(searchKey));
+    protected void doUpdate(Resume resume, String searchKey) {
+        storage.replace(searchKey, resume);
     }
 
     @Override
-    protected void doUpdate(Resume resume, Object searchKey) {
-        storage.replace(String.valueOf(searchKey), resume);
+    protected boolean isExist(String searchKey) {
+        return storage.containsKey(searchKey);
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
-        storage.remove(String.valueOf(searchKey));
+    protected void doSave(Resume resume, String searchKey) {
+        storage.put(searchKey, resume);
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        return storage.get(String.valueOf(searchKey));
+    protected Resume doGet(String searchKey) {
+        return storage.get(searchKey);
+    }
+
+    @Override
+    protected void doDelete(String searchKey) {
+        storage.remove(searchKey);
+    }
+
+    @Override
+    protected List<Resume> doCopyAll() {
+        return new ArrayList<>(storage.values());
+    }
+
+    @Override
+    public void clear() {
+        storage.clear();
+    }
+
+    @Override
+    public int size() {
+        return storage.size();
     }
 }

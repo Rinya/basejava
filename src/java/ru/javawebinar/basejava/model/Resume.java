@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.model;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -15,9 +16,9 @@ public class Resume implements Comparable<Resume> {
     }
 
     public Resume(String uuid, String fullName) {
-        if (fullName == null || fullName.length() == 0) {
-            throw new IllegalArgumentException("fullName is empty, for uuid " + uuid);
-        }
+        Objects.requireNonNull(uuid, "uuid must not be null");
+        Objects.requireNonNull(fullName, "fullname must not be null");
+
         this.uuid = uuid;
         this.fullname = fullName;
     }
@@ -41,12 +42,14 @@ public class Resume implements Comparable<Resume> {
 
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        int result = uuid.hashCode();
+        result = 31 * result + fullname.hashCode();
+        return result;
     }
 
     @Override
     public String toString() {
-        return uuid;
+        return uuid + '(' + fullname + ')';
     }
 
     @Override
