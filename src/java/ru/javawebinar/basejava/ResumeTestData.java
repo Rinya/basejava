@@ -15,13 +15,13 @@ public class ResumeTestData {
 
     public static void main(String[] args) {
         resume = new Resume("Григорий Кислин");
-        createPhoneContact();
-        createContact(SKYPE, "grigory.kislin", "skype:grigory.kislin");
-        createContact(EMAIL, "gkislin@yandex.ru", "mailto:gkislin@yandex.ru");
-        createContact(LINKEDIN, "Профиль LinkedIn", "https://www.linkedin.com/in/gkislin");
-        createContact(GITHUB, "Профиль GitHub", "https://github.com/gkislin");
-        createContact(STATCKOVERFLOW, "Профиль Stackoverflow", "https://stackoverflow.com/users/548473");
-        createContact(HOMEPAGE, "Домашняя страница", "http://gkislin.ru/");
+        createContact(PHONE, "+7(921) 855-0482");
+        createContact(SKYPE, "grigory.kislin");
+        createContact(EMAIL, "gkislin@yandex.ru");
+        createContact(LINKEDIN, "Профиль LinkedIn");
+        createContact(GITHUB, "Профиль GitHub");
+        createContact(STATCKOVERFLOW, "Профиль Stackoverflow");
+        createContact(HOMEPAGE, "Домашняя страница");
 
         SimpleItem objectiveItem = new SimpleItem("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
         createSection(OBJECTIVE, objectiveItem);
@@ -153,15 +153,15 @@ public class ResumeTestData {
                 .withLink(new Link("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики",
                         "http://www.ifmo.ru/"));
         DurationItem durationItem = new DurationItem()
-                .withDuration(new Period(LocalDate.of(1993, 9, 1),
-                        LocalDate.of(1996, 7, 1)))
+                        .withBegin(LocalDate.of(1993, 9, 1))
+                        .withEnd(LocalDate.of(1996, 7, 1))
                         .withTitle("Аспирантура (программист С, С++)");
         item.getRowList().add(durationItem);
 
         durationItem = new DurationItem()
-                .withDuration(new Period(LocalDate.of(1987, 9, 1),
-                        LocalDate.of(1993, 7, 1)))
-                .withTitle("Инженер (программист Fortran, C)");
+                        .withBegin(LocalDate.of(1987, 9, 1))
+                        .withEnd(LocalDate.of(1993, 7, 1))
+                        .withTitle("Инженер (программист Fortran, C)");
         item.getRowList().add(durationItem);
         educationList.add(item);
 
@@ -188,7 +188,8 @@ public class ResumeTestData {
                 .withLink(new Link(organization, url));
 
         DurationItem durationItem = new DurationItem()
-                .withDuration(new Period(beginDate, endDate))
+                .withBegin(beginDate)
+                .withEnd(endDate)
                 .withTitle(title)
                 .withDescription(description);
         item.getRowList().add(durationItem);
@@ -219,7 +220,7 @@ public class ResumeTestData {
                 .entrySet()
                 .stream()
                 .map(entry -> entry.getKey().getTitle() + ": "
-                    + entry.getValue().getContent())
+                    + entry.getValue())
                 .forEach(System.out::println);
 
         for (Map.Entry<SectionType, Section> entry: resume.getSections().entrySet()) {
@@ -236,12 +237,9 @@ public class ResumeTestData {
         }
     }
 
-    private static void createPhoneContact() {
-        createContact(PHONE, "+7(921) 855-0482", null);
-    }
-    private static void createContact(ContactType type, String contact, String url) {
+    private static void createContact(ContactType type, String contact) {
         resume
                 .getContacts()
-                .put(type, new Contact(contact, url));
+                .put(type, contact);
     }
 }

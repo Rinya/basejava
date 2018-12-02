@@ -12,7 +12,7 @@ public class Resume implements Comparable<Resume> {
     // Unique identifier
     private final String uuid;
     private final String fullname;
-    private Map<ContactType, Contact> contacts;
+    private Map<ContactType, String> contacts;
     private Map<SectionType, Section> sections;
 
     public Resume(String fullname) {
@@ -37,7 +37,7 @@ public class Resume implements Comparable<Resume> {
         return fullname;
     }
 
-    public Map<ContactType, Contact> getContacts() {
+    public Map<ContactType, String> getContacts() {
         return contacts;
     }
 
