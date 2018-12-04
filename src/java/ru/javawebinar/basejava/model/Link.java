@@ -1,50 +1,46 @@
 package ru.javawebinar.basejava.model;
 
-public class Link {
-    private String text;
-    private String url;
+import java.util.Objects;
 
-    public Link(String text, String url) {
-        this.text = text;
+public class Link {
+    private final String name;
+    private final String url;
+
+    public Link(String name, String url) {
+        Objects.requireNonNull(name, "name must not be null");
+        this.name = name;
         this.url = url;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    public String getName() {
+        return name;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    @Override
+    public String toString() {
+        return "Link(" + name + ',' + url + ')';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Link)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Link link = (Link) o;
 
-        if (getText() != null ? !getText().equals(link.getText()) : link.getText() != null) return false;
-        return getUrl() != null ? getUrl().equals(link.getUrl()) : link.getUrl() == null;
+        if (!name.equals(link.name)) return false;
+        return url != null ? url.equals(link.url) : link.url == null;
+
     }
 
     @Override
     public int hashCode() {
-        int result = getText() != null ? getText().hashCode() : 0;
-        result = 31 * result + (getUrl() != null ? getUrl().hashCode() : 0);
+        int result = name.hashCode();
+        result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return '(' + text + ": " + url + ')';
     }
 }

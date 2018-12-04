@@ -3,10 +3,10 @@ package ru.javawebinar.basejava.model;
 import java.util.List;
 import java.util.Objects;
 
-public class ListItems implements SectionItem {
+public class ListSection extends Section {
     private final List<String> items;
 
-    public ListItems(List<String> items) {
+    public ListSection(List<String> items) {
         Objects.requireNonNull(items, "items must not be null");
         this.items = items;
     }
@@ -25,7 +25,7 @@ public class ListItems implements SectionItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ListItems that = (ListItems) o;
+        ListSection that = (ListSection) o;
 
         return items.equals(that.items);
 
