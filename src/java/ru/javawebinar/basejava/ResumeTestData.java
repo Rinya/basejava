@@ -170,7 +170,7 @@ public class ResumeTestData {
     }
 
     private static void showResume(Resume resume) {
-        System.out.println(resume.getFullname());
+        System.out.println(resume.getFullName());
         resume
                 .getContacts()
                 .entrySet()

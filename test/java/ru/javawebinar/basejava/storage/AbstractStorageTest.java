@@ -25,16 +25,13 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_3;
     private static final Resume RESUME_4;
 
-    private static final String III = "Ivanov Ivan Ivanovich";
-    private static final String PPP = "Petrov Petr Petrovich";
     private static final String KKK = "Konstantinov Konstantin Konstantinovich";
-    private static final String RRR = "Romanov Roman Romanovich";
 
     static {
-        RESUME_1 = new Resume(UUID_1, III);
-        RESUME_2 = new Resume(UUID_2, PPP);
+        RESUME_1 = new Resume(UUID_1, "Ivanov Ivan Ivanovich");
+        RESUME_2 = new Resume(UUID_2, "Petrov Petr Petrovich");
         RESUME_3 = new Resume(UUID_3, KKK);
-        RESUME_4 = new Resume(UUID_4, RRR);
+        RESUME_4 = new Resume(UUID_4, "Romanov Roman Romanovich");
     }
 
     AbstractStorageTest(Storage storage) {

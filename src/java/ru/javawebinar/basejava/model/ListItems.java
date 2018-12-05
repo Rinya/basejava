@@ -3,7 +3,7 @@ package ru.javawebinar.basejava.model;
 import java.util.List;
 import java.util.Objects;
 
-public class ListItems implements SectionItem {
+public class ListItems {
     private final List<String> items;
 
     public ListItems(List<String> items) {
