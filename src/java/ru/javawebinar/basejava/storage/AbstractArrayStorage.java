@@ -62,7 +62,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
         return size;
     }
 
-    protected abstract Integer getSearchKey(String condition);
     protected abstract void insertElement(Resume resume, int index);
     protected abstract void fillDeletedElement(int index);
 }
